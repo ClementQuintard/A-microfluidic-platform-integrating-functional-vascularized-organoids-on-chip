@@ -1,0 +1,26 @@
+
+input=getDirectory("Choose a Directory ");
+output=getDirectory("Choose a Directory ");
+setBatchMode(true);
+requires("1.33s")
+list=getFileList(input);
+for (i=0; i<list.length-1; i++) {
+print (i);
+open(input + list[i]);
+open (input + list[i+1]);
+imageCalculator("Subtract create", list[i],list[i+1]);
+
+run("8-bit");
+
+
+
+
+selectWindow(list[i]);
+close();
+selectWindow(list[i+1]);
+close();
+
+saveAs ("Tif", output + list [i]);
+close();
+}
+
