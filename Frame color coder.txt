@@ -1,0 +1,79 @@
+input=getDirectory("Choose a Directory ");
+
+outputsum=getDirectory("Choose a Directory ");
+
+requires("1.33s");
+//dir = getDirectory("Choose a Directory ");
+setBatchMode(true);
+
+list=getFileList(input);
+totalfiles=list.length;
+
+run("Fire");
+getLut(rA, gA, bA);
+close();
+
+nrA = newArray(256);
+ngA = newArray(256);
+nbA = newArray(256);
+
+relative=255/totalfiles;
+
+repeats= floor(totalfiles/100)
+write (repeats + "repeats")
+j=0;
+print(j);
+open(input + list[j]);
+
+idold=getImageID;
+//run("Invert");
+nrA[255] = round(rA[j * relative] );
+ngA[255] = round(gA[j * relative] );
+nbA[255] = round(bA[j * relative] );
+setLut(nrA,ngA,nbA);
+
+saveAs ("png", outputsum + list [j]);
+run("RGB Color");
+
+for (i=1;i<repeats+1;i++){
+    for (j = 100*(i-1)+1; j < i*100+1; j++) {
+        print(j);
+        open(input + list[j]);
+            idnew = getImageID;
+        run("8-bit");
+       // run("Invert");
+        nrA[255] = round(rA[j * relative] );
+        ngA[255] = round(gA[j * relative] );
+        nbA[255] = round(bA[j * relative] );
+        setLut(nrA,ngA,nbA);
+        run("RGB Color");
+        imageCalculator("Add create", idold, idnew);
+        selectImage(idold);
+        close();
+        idold=getImageID;
+        saveAs ("png", outputsum + list [j]);
+       
+        selectImage(idnew);
+        close();
+        }
+    }
+for (j = (repeats)*100; j < totalfiles; j++) {
+        print(j);
+        open(input + list[j]);
+        idnew = getImageID;
+        run("8-bit");
+       // run("Invert");
+        nrA[255] = round(rA[j * relative] );
+        ngA[255] = round(gA[j * relative] );
+        nbA[255] = round(bA[j * relative] );
+        setLut(nrA,ngA,nbA);
+        run("RGB Color");
+        imageCalculator("Add create", idold, idnew);
+        selectImage(idold);
+        close();
+        idold=getImageID;
+        saveAs ("png", outputsum + list [j]);
+       
+        selectImage(idnew);
+        close();
+        }
