@@ -100,7 +100,6 @@ gene_names <- function(results) {
 data <- data[,4:ncol(data)]
 design_matrix <- design_matrix[4:nrow(design_matrix),]
 
-# to exclude chip static samples 5,4 because they are on a different chip 
 data <- data[,-c(5,4)]
 design_matrix <- design_matrix[-c(5,4),]
 
