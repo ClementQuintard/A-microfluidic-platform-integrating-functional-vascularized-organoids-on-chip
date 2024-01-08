@@ -536,49 +536,4 @@ EnhancedVolcano(one_four, x = "log2FoldChange", y = "padj",
                 )
 
 
-# Analysis old----------------------------------------------------------------
-
-dds <- DESeqDataSetFromMatrix(countData = data,
-                              colData = design_matrix,
-                              design = ~ + flow*huvec)
-
-# filter out rowsums with less than 10 countsold
-keep <- rowSums(counts(dds)) >= 10
-dds <- dds[keep,]
-
-# this runs differential expression
-dds <- DESeq(dds)
-resultsNames(dds)
-# analysis of differential expression between huvec yes vs no 
-huvec <- results(dds,name = "huvec_yes_vs_no")
-huvec <- huvec[which(huvec$padj <= 0.05),]
-huvec <- gene_names(huvec)
-write.csv(huvec, "huvec.csv")
-# well vs chip 
-chip <- results(dds,lfcThreshold = 3,name = "on.chip_well_vs_chip")
-chip <- chip[which(chip$padj <= 0.05),]
-chip <- gene_names(chip)
-write.csv(chip, "chip.csv")
-# flow
-flow <- results(dds,lfcThreshold = 0, name = "flow_static_vs_flow")
-flow <- flow[which(flow$padj <= 0.05),]
-flow <- gene_names(flow)
-write.csv(flow, "flow.csv")
-
-# static no huvec vs flow and huvec
-flow_huvecyes <- results(dds,  name = "flowflow.huvecyes")
-flow_huvecyes <- flow_huvecyes[which(flow_huvecyes$padj <= 0.05),]
-flow_huvecyes <- flow_huvecyes[which(abs(flow_huvecyes$log2FoldChange) > 1.5),]
-flow_huvecyes <- flow_huvecyes[which(flow_huvecyes$baseMean > 18),]
-flow_huvecyes <- gene_names(flow_huvecyes)
-write.csv(flow_huvecyes, "flow_huvecyes.csv")
-
-one_two <- results(dds, contrast=c("condition", "4", "3"))
-one_two <- one_two[which(one_two$padj <= 0.05),]
-one_two <- one_two[which(abs(one_two$log2FoldChange) > 1.5),]
-one_two <- one_two[which(one_two$baseMean > 18),]
-one_two <- gene_names(one_two)
-write.csv(one_two, "one_two.csv")
-
-
 
